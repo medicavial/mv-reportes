@@ -1,0 +1,17 @@
+:root{
+    --blue: #0082cd;
+}
+
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.mv-blue {
+  background-color: var(--blue) !important;
+}
+
+.mv-blue-text {
+  color: var(--blue) !important;
+}
