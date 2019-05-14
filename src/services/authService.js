@@ -1,12 +1,20 @@
-import Router from 'vue-router';
+let changeStatus = new Event('changeStatus');
 
 export default {
+
     auth( userData, remember ){
         if ( remember ) localStorage.setItem('session', JSON.stringify(userData))
 
         sessionStorage.setItem('session', JSON.stringify(userData))
 
-        return this.checkSession();
+        let verify = this.checkSession();
+
+        if ( !verify ) {
+            return verify;
+        }else{
+            document.dispatchEvent(changeStatus);
+            return verify;
+        }
     },
 
     checkSession(){
@@ -25,6 +33,11 @@ export default {
         sessionStorage.removeItem('session');
         if (localStorage.getItem('session')) localStorage.removeItem('session');
 
+        document.dispatchEvent(changeStatus);
         return this.checkSession();
+    },
+
+    userData(){
+        return JSON.parse( sessionStorage.getItem('session') );
     }
 }

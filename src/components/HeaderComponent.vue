@@ -1,7 +1,14 @@
 <template>
     <div>
-        <NavbarComponent :routes="routes"></NavbarComponent>
-        <SidenavComponent :routes="routes"></SidenavComponent>
+        <NavbarComponent 
+            :routes="routes" 
+            v-if="navVisible" 
+            v-on:changeStatus="checkSession()" />
+
+        <SidenavComponent 
+            :routes="routes" 
+            v-if="navVisible" 
+            v-on:changeStatus="checkSession()" />
     </div>
 
 </template>
@@ -14,7 +21,6 @@
     import Router from '@/router.js';
     import AuthService from '@/services/authService'
 
-    // console.log(Router.currentRoute.name);
 
     export default {
         name: 'Header',
@@ -26,38 +32,23 @@
             return {
                 routes : Router.options.routes,
                 currentRoute: Router.currentRoute.name,
-                // navVisible
-                // renderComponent: false
+                navVisible: false
             }
         },
         watch: {
             '$route' (to, from) {
-                // console.log(this.checkSession())
                 if (to.name === 'login' && this.checkSession() ) {
                     this.$router.push('/inicio');
-                    // this.checkSession();
-                    this.forceRender();
                 }
                 if (to.name !== 'login' && !this.checkSession() ) {
                      this.$router.push('/');
-                    //  this.checkSession();
-                     this.forceRender();
                 }
             }
         },
         methods: {
             checkSession(){
-                return AuthService.checkSession();
+                return this.navVisible = AuthService.checkSession() ? true : false;
             },
-            // forceRender(){
-            //     this.renderComponent = true;
-
-            //     this.$nextTick(() => {
-            //         // Add the component back in
-            //         // this.renderComponent = true;
-            //         this.renderComponent = this.checkSession();
-            //     });
-            // }
         }
     }
 </script>
