@@ -7,8 +7,14 @@ export default {
         return fetch(url).then(res => res.json());
     },
 
-    login: ( username, password, remember ) => {
+    login: ( credentials ) => {
         const url = `${baseURL}/externos/login`;
+
+        let loginData = {
+            username: credentials.usr,
+            password: credentials.pwd,
+            remember: credentials.rem
+        }
 
         return fetch(url, {
             method: 'POST',
@@ -16,7 +22,7 @@ export default {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ username: username, password: password, remember: remember })
+            body: JSON.stringify( loginData )
         }).then(res => res.json());
     }
 }

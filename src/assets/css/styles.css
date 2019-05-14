@@ -15,3 +15,7 @@ body {
 .mv-blue-text {
   color: var(--blue) !important;
 }
+
+.no-margin-bottom{
+  margin-bottom: 0px !important;
+}

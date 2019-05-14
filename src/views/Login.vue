@@ -1,33 +1,117 @@
 <template>
-  <div class="login" id="frameContainer">
-    <div class="row valing-wrapper">
-      <div class="col s12 center grey-text">
-        <i class="mdi mdi-settings mdi-48px mdi-spin"></i>
+  <div class="login">
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col s12 m8 offset-m2 l6 offset-l3">
+            <div class="card">
+              <div class="card-header mv-blue white-text">
+                <div class="section">
+                  <div class="container">
+                    <div class="row no-margin-bottom">
+                      <div class="col s6 offset-s3 m6 offset-m3 valign-wrapper">
+                        <img  src="@/assets/logos/logo.png" 
+                              alt="Medicavial logo"
+                              class="responsive-img">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-content">
+                <span class="grey-text text-darken-1">
+                  <i class="mdi mdi-lightbulb-on-outline"></i>
+                  Ingresa con tu usuario y contraseña.
+                </span>
+
+                <div class="section">
+                  <div class="container">
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <i class="mdi mdi-account prefix blue-grey-text text-darken-1"></i>
+                        <input  id="username" type="text"
+                                autocomplete="off"
+                                v-model="credentials.usr">
+                                <!-- @keyup="prueba()" -->
+                        <label for="username">USUARIO</label>
+                      </div>
+
+                      <div class="input-field col s12">
+                        <i class="mdi mdi-key prefix blue-grey-text text-darken-1"></i>
+                        <input  id="password" type="password"
+                                autocomplete="off"
+                                v-model="credentials.pwd">
+                        <label for="password">CONTRASEÑA</label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col s12 center">
+                        <label>
+                          <input  type="checkbox" 
+                                  class="filled-in"
+                                  v-model="credentials.rem"/>
+                          <span>Recordar usuario</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                        <button class="col s12 m10 offset-m1 l8 offset-l2 btn mv-blue waves-effect waves-light"
+                                @click="loginAttempt()">
+                          Ingresar
+                        </button>
+                    </div>
+
+                    <div class="row no-margin-bottom hide">
+                      <div class="col s12 right-align">
+                        <small>
+                          <a href="javascript:;" class="grey-text">
+                            <i class="mdi mdi-lock-reset"></i> Recuperar contraseña
+                            </a>
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- <div class="container" id="frameContainer"></div> -->
-    <!-- <iframe frameborder=0 width="1400" height="1500" src="https://analytics.zoho.com/open-view/1945768000000340508/0c979cab04c16b3763b3cd1f176b6f96"></iframe> -->
   </div>
 </template>
 
 <script>
+import ApiService from '@/services/apiService'
+import AuthService from '@/services/authService'
+import Router from '@/router.js';
 
 export default {
     name: 'login',
-    mounted() {
-      let frameContainer = document.getElementById('frameContainer');
-      let sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight - ( window.innerHeight * 0.08 )
+    mounted() {},
+    data() {
+      return {
+        credentials: {
+          usr: null,
+          pwd: null,
+          rem: false,
+        }
       }
+    },
+    methods: {
+      async loginAttempt(){
+        await ApiService.login( this.credentials )
+              .then( res => {
+                if ( !res || res.length !== 1 ) return alert('Datos incorrectos');
+                
+                let resAuth = AuthService.auth( res[0], this.credentials.rem );
 
-      let dataFrame= `<iframe frameborder=0 
-                              width="${ sizes.width }" 
-                              height="${ sizes.height }" 
-                              src="https://analytics.zoho.com/open-view/1945768000000340508/0c979cab04c16b3763b3cd1f176b6f96">
-                      </iframe>`;
-
-      frameContainer.innerHTML = dataFrame;
+                this.$router.push('/inicio');
+              });
+      }
     }
 }
 </script>

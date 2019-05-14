@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 Vue.use(Router)
 
@@ -8,6 +7,8 @@ export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    //definimos unn default para cuando se intenta acceder a una ruta inexistente
+    { path: '*', redirect: { name: 'login' } },
     {
       path: '/',
       name: 'login',
@@ -19,12 +20,12 @@ export default new Router({
     {
       path: '/inicio',
       name: 'home',
-      component: Home
+      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/particulares',
+      name: 'particulares',
+      component: () => import(/* webpackChunkName: "particulares" */ './views/Particulares.vue')
     }
   ]
 })
