@@ -19,3 +19,7 @@ body {
 .no-margin-bottom{
   margin-bottom: 0px !important;
 }
+
+.mouse-select{
+  cursor: pointer;
+}

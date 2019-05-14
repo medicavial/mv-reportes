@@ -7,10 +7,14 @@
         <div class="row">
           <div class="col s12">
             <div class="card">
-              <div class="card-content">
+              <div class="card-content grey-text text-darken-3">
                 <span class="card-title">
-                  Bienvenido Fulanito
+                  Bienvenido <strong>{{ userData.fullName }}</strong>
                 </span>
+
+                <p class="orange-text text-darken-3">
+                  <i class="mdi mdi-alert"></i> Sistema en desarrollo
+                </p>
               </div>
             </div>
           </div>
@@ -18,7 +22,7 @@
 
         <div class="row">
           <div class="col s12 m4 l3">
-            <div class="card purple white-text">
+            <div class="card mv-blue white-text hoverable mouse-select" @click="irReporte">
               <div class="card-content">
                 <span class="card-title">
                   Reporte 1
@@ -28,7 +32,7 @@
           </div>
 
           <div class="col s12 m4 l3">
-            <div class="card purple white-text">
+            <div class="card mv-blue white-text hoverable mouse-select" @click="irReporte">
               <div class="card-content">
                 <span class="card-title">
                   Reporte 2
@@ -38,7 +42,7 @@
           </div>
 
           <div class="col s12 m4 l3">
-            <div class="card purple white-text">
+            <div class="card mv-blue white-text hoverable mouse-select" @click="irReporte">
               <div class="card-content">
                 <span class="card-title">
                   Reporte 3
@@ -56,22 +60,24 @@
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
 import ApiService from '@/services/apiService'
+import AuthService from '@/services/authService'
 
 export default {
   name: 'home',
+  data() {
+    return {
+      userData: null
+    }
+  },
   components: {
     HelloWorld
   },
   beforeMount(){
-    this.pruebaGET();
+    this.userData = AuthService.userData();
   }, 
   methods: {
-    async pruebaGET(){
-      await ApiService.pruebaGET().then( res => console.log(res) );
-    },
-
-    async login(){
-      await ApiService.login().then( res => console.log(res) );
+    irReporte(){
+      this.$router.push('/particulares');
     }
   }
 }

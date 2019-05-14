@@ -9,15 +9,15 @@
             <a data-target="mobile-menu" class="left sidenav-trigger"><i class="mdi mdi-menu"></i></a>
             
             <ul class="right hide-on-med-and-down">
-                <li class="waves-effect waves-light opt-menu">
+                <!-- <li class="waves-effect waves-light opt-menu">
                     <router-link to="/">Login</router-link>
-                </li>
+                </li> -->
                 <li class="waves-effect waves-light opt-menu">
                     <router-link to="/inicio">Inicio</router-link>
                 </li>
-                <li class="waves-effect waves-light opt-menu">
+                <!-- <li class="waves-effect waves-light opt-menu">
                     <router-link to="/particulares">Particulares</router-link>
-                </li>
+                </li> -->
 
                 <li class="waves-effect waves-light opt-menu" @click="logout()">
                     <a href="javascript:;">Cerrar Sesión</a>
@@ -31,14 +31,11 @@
 
 <script>
 import AuthService from '@/services/authService'
-import Router from '@/router.js';
 
 export default {
-    props: ['routes'],
+    // props: ['routes'],
     computed: {},
-    mounted(){
-        // console.log(this.routes)
-    },
+    mounted(){},
     methods:{
         logout(){
             AuthService.logout();
