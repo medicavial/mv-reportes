@@ -2,11 +2,11 @@
   <div class="home">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <div class="section">
+    <div class="section animated fadeIn fast">
       <div class="container">
         <div class="row">
           <div class="col s12">
-            <div class="card">
+            <div class="card mouse-default">
               <div class="card-content grey-text text-darken-3">
                 <span class="card-title">
                   Bienvenido <strong>{{ userData.fullName }}</strong>

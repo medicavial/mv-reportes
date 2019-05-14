@@ -23,3 +23,7 @@ body {
 .mouse-select{
   cursor: pointer;
 }
+
+.mouse-default{
+  cursor: default !important;
+}

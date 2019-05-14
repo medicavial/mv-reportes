@@ -1,6 +1,6 @@
 {
-  "name": "mv-reportes",
-  "short_name": "mv-reportes",
+  "name": "MV Reportes",
+  "short_name": "MV Reportes",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
@@ -15,6 +15,6 @@
   ],
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0182CD",
-  "theme_color": "#0182CD"
+  "background_color": "#FFFFFF",
+  "theme_color": "#0082CD"
 }
