@@ -1,10 +1,10 @@
 <template>
   <div class="login">
-    <div class="section">
+    <div class="section animated fadeIn fast">
       <div class="container">
         <div class="row">
           <div class="col s12 m8 offset-m2 l6 offset-l3">
-            <div class="card">
+            <div class="card" id="card-login">
               <div class="card-header mv-blue white-text">
                 <div class="section">
                   <div class="container">
@@ -20,13 +20,13 @@
               </div>
 
               <div class="card-content">
-                <span class="grey-text text-darken-1">
-                  <i class="mdi mdi-lightbulb-on-outline"></i>
-                  Ingresa con tu usuario y contraseña.
-                </span>
-
                 <div class="section">
-                  <form v-on:submit.prevent="loginAttempt" >
+                  <span class="grey-text text-darken-1">
+                    <i class="mdi mdi-lightbulb-on-outline"></i>
+                    Ingresa con tu usuario y contraseña.
+                  </span>
+                  
+                  <form v-on:submit.prevent="loginAttempt">
                     <div class="container">
                       <div class="row">
                         <div class="input-field col s12">

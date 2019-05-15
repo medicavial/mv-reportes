@@ -2,7 +2,7 @@
     --blue: #0082cd;
 }
 
-body {
+body{
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -26,4 +26,24 @@ body {
 
 .mouse-default{
   cursor: default !important;
+}
+
+@media screen and (max-width: 600px) {
+  #card-login .card-content{
+    padding: 12px !important;
+  }
+
+  .brand-logo > img{
+    height: 40px !important;
+    margin-top: 8px !important;
+  }
+}
+
+#card-login .card-content .section{
+  padding-bottom: 0px !important;
+}
+
+.brand-logo > img{
+  height: 50px;
+  margin-top: 7px;
 }

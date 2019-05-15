@@ -3,7 +3,7 @@
         <nav class="mv-blue">
             <div class="nav-wrapper container">
                 <router-link to="/" class="brand-logo">
-                    <img src="@/assets/logos/logo.png" alt="MedicaVial Logo" style="height: 40px;" />
+                    <img src="@/assets/logos/logo.png" alt="MedicaVial Logo" />
                 </router-link>
 
                 <a data-target="mobile-menu" class="left sidenav-trigger"><i class="mdi mdi-menu"></i></a>
