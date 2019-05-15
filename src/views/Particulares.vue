@@ -5,8 +5,6 @@
         <i class="mdi mdi-settings mdi-48px mdi-spin"></i>
       </div>
     </div>
-    <!-- <div class="container" id="frameContainer"></div> -->
-    <!-- <iframe frameborder=0 width="1400" height="1500" src="https://analytics.zoho.com/open-view/1945768000000340508/0c979cab04c16b3763b3cd1f176b6f96"></iframe> -->
   </div>
 </template>
 

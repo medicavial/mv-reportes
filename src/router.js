@@ -20,7 +20,8 @@ export default new Router({
     {
       path: '/inicio',
       name: 'home',
-      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue')
+      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
+      // meta: { requiresAuth: true }
     },
     {
       path: '/particulares',
