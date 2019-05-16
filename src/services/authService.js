@@ -1,11 +1,14 @@
+import PermisosService from '@/services/permisosService'
+
 let changeStatus = new Event('changeStatus');
 
 export default {
-
     auth( userData, remember ){
-        if ( remember ) localStorage.setItem('session', JSON.stringify(userData))
-
+        let permisos = PermisosService.verificaPermisos(userData.username);
+        userData.permisos = permisos;
+        
         sessionStorage.setItem('session', JSON.stringify(userData))
+        if (remember) localStorage.setItem('session', JSON.stringify(userData))
 
         let verify = this.checkSession();
 
@@ -22,6 +25,8 @@ export default {
             if (localStorage.getItem('session')) {
                 sessionStorage.setItem('session', JSON.stringify(JSON.parse(localStorage.getItem('session'))));
             }
+            let usuario = JSON.parse(sessionStorage.getItem('session'));
+            // console.log(PermisosService.verificaPermisos(usuario.username));
 
             return true;
         } else {

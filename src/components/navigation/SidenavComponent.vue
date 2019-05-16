@@ -1,6 +1,6 @@
 <template>
     <ul class="sidenav" id="mobile-menu">
-    <li><a>UNIDADES MÉDICAVIAL</a></li>
+    <li><a>REPORTES MÉDICAVIAL</a></li>
     <div class="divider"></div>
         <li>
             <router-link to="/" class="waves-effect sidenav-close">
@@ -9,11 +9,11 @@
         </li>
 
         <li>
-            <!-- <router-link to="unidades" class="waves-effect sidenav-close"> -->
-            <a href="javascript:;" @click="logout()">
+            <a  href="javascript:;"
+                @click="logout()"
+                class="waves-effect sidenav-close">
                 <i class="mdi mdi-hospital-building mdi-24px"></i>Cerrar Sesión
             </a>
-            <!-- </router-link> -->
         </li>
     </ul>
 </template>

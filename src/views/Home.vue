@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <div class="section animated fadeIn fast">
       <div class="container">
         <div class="row">
@@ -11,6 +9,11 @@
                 <span class="card-title">
                   Bienvenido <strong>{{ userData.fullName }}</strong>
                 </span>
+
+                <p>
+                  Permisos:
+                  <span v-for="permiso in userData.permisos" :key="permiso"> {{ permiso.toUpperCase() }} </span>
+                </p>
 
                 <p class="orange-text text-darken-3">
                   <i class="mdi mdi-alert"></i> Sistema en desarrollo
@@ -58,7 +61,6 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
 import ApiService from '@/services/apiService'
 import AuthService from '@/services/authService'
 
@@ -69,9 +71,7 @@ export default {
       userData: null
     }
   },
-  components: {
-    HelloWorld
-  },
+  components: {},
   beforeMount(){
     this.userData = AuthService.userData();
   }, 
