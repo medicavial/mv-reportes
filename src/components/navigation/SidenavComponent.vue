@@ -12,7 +12,7 @@
             <a  href="javascript:;"
                 @click="logout()"
                 class="waves-effect sidenav-close">
-                <i class="mdi mdi-hospital-building mdi-24px"></i>Cerrar Sesión
+                <i class="mdi mdi-logout mdi-24px"></i>Cerrar Sesión
             </a>
         </li>
     </ul>
@@ -30,8 +30,8 @@ export default {
     methods:{
         logout(){
             AuthService.logout();
-            
-            return this.$router.push('/');
+            this.$router.push('/');
+            return window.close();
         }
     }
 }

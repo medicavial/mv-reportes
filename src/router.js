@@ -27,6 +27,16 @@ export default new Router({
       path: '/particulares',
       name: 'particulares',
       component: () => import(/* webpackChunkName: "particulares" */ './views/Particulares.vue')
+    },
+    {
+      path: '/insumos',
+      name: 'insumos',
+      component: () => import(/* webpackChunkName: "insumos" */ './views/Insumos.vue')
+    },
+    {
+      path: '/operativo',
+      name: 'operativo',
+      component: () => import(/* webpackChunkName: "operativo" */ './views/Operativo.vue')
     }
   ]
 })

@@ -6,13 +6,15 @@
           <div class="col s12">
             <div class="card mouse-default">
               <div class="card-content grey-text text-darken-3">
-                <span class="card-title">
+                <span class="flow-text">
                   Bienvenido <strong>{{ userData.fullName }}</strong>
                 </span>
 
-                <p>
+                <p v-if="!userData.permisos.includes('admin')">
                   Permisos:
-                  <span v-for="permiso in userData.permisos" :key="permiso"> {{ permiso.toUpperCase() }} </span>
+                  <span v-for="permiso in userData.permisos" :key="permiso">
+                    {{ permiso.toUpperCase() }}
+                  </span>
                 </p>
 
                 <p class="orange-text text-darken-3">
@@ -24,35 +26,49 @@
         </div>
 
         <div class="row">
-          <div class="col s12 m4 l3">
-            <div class="card mv-blue white-text hoverable mouse-select" @click="irReporte">
+
+          <div  class="col s12 m6 l4"
+                v-if="userData.permisos.includes( 'particulares') || userData.permisos.includes( 'admin')">
+            <div  class="card cyan darken-1 white-text waves-effect waves-light hoverable mouse-select"
+                  style="width:100%"
+                  @click="irReporte('particulares')">
               <div class="card-content">
                 <span class="card-title">
-                  Reporte 1
+                  Reporte de particulares
                 </span>
+                <p> PARTICULARES </p>
               </div>
             </div>
           </div>
 
-          <div class="col s12 m4 l3">
-            <div class="card mv-blue white-text hoverable mouse-select" @click="irReporte">
+          <div  class="col s12 m6 l4"
+                v-if="userData.permisos.includes( 'insumos') || userData.permisos.includes( 'admin')">
+            <div  class="card orange darken-1 white-text waves-effect waves-light hoverable mouse-select"
+                  style="width:100%"
+                  @click="irReporte('insumos')">
               <div class="card-content">
                 <span class="card-title">
-                  Reporte 2
+                  Reporte de insumos
                 </span>
+                <p> INSUMOS </p>
               </div>
             </div>
           </div>
 
-          <div class="col s12 m4 l3">
-            <div class="card mv-blue white-text hoverable mouse-select" @click="irReporte">
+          <div  class="col s12 m6 l4"
+                v-if="userData.permisos.includes( 'operativo') || userData.permisos.includes( 'admin')">
+            <div  class="card light-green darken-1 white-text waves-effect waves-light hoverable mouse-select"
+                  style="width:100%"
+                  @click="irReporte('operativo')">
               <div class="card-content">
                 <span class="card-title">
-                  Reporte 3
+                  Reporte operativo
                 </span>
+                <p> OPERATIVO </p>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -76,8 +92,8 @@ export default {
     this.userData = AuthService.userData();
   }, 
   methods: {
-    irReporte(){
-      this.$router.push('/particulares');
+    irReporte(ruta){
+      this.$router.push(`/${ ruta }`);
     }
   }
 }
