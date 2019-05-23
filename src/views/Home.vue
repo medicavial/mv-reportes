@@ -34,7 +34,7 @@
                   @click="irReporte('particulares')">
               <div class="card-content">
                 <span class="card-title">
-                  Reporte de particulares
+                  Reporte general
                 </span>
                 <p> PARTICULARES </p>
               </div>
@@ -48,7 +48,7 @@
                   @click="irReporte('insumos')">
               <div class="card-content">
                 <span class="card-title">
-                  Reporte de insumos
+                  Flujo AIG
                 </span>
                 <p> INSUMOS </p>
               </div>
