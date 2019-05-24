@@ -17,12 +17,17 @@
 
 <script>
 import AuthService from '@/services/authService'
+import ApiService from '@/services/apiService'
 
 export default {
     name: 'operativo',
     data() {
       return {
-        userData: null
+        userData: null,
+        screen: {
+          width: window.innerWidth,
+          height: window.innerHeight - ( window.innerHeight * 0.08 )
+        }
       }
     },
     beforeCreate() {
@@ -36,12 +41,32 @@ export default {
         this.$router.push('/inicio');
       }
     },
+    beforeMount() {
+      this.getReporte();
+    },
     mounted() {
       let frameContainer = document.getElementById('frameContainer');
       let sizes = {
         width: window.innerWidth,
         height: window.innerHeight - ( window.innerHeight * 0.08 )
       }
+    },
+    methods: {
+      async getReporte(){
+        await ApiService.reportesUsuario()
+                .then(res => this.renderFrame( res ));
+      },
+
+      renderFrame( data ){
+        console.log(data[0].REP_codigo);
+        let codigo = data[0].REP_codigo.replace('DEVICEWIDTH', `"${this.screen.width}"`);
+        codigo = codigo.replace('DEVICEHEIGHT', `"${this.screen.height}"`);
+
+        frameContainer.innerHTML = codigo;
+
+        console.log(codigo);
+      }
+
     }
 }
 </script>

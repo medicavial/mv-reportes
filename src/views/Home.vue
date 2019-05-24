@@ -26,9 +26,8 @@
         </div>
 
         <div class="row">
-
           <div  class="col s12 m6 l4"
-                v-if="userData.permisos.includes( 'particulares') || userData.permisos.includes( 'admin')">
+                v-if="userData.permisos.includes( 'particulares')">
             <div  class="card cyan darken-1 white-text waves-effect waves-light hoverable mouse-select"
                   style="width:100%"
                   @click="irReporte('particulares')">
@@ -42,7 +41,7 @@
           </div>
 
           <div  class="col s12 m6 l4"
-                v-if="userData.permisos.includes( 'insumos') || userData.permisos.includes( 'admin')">
+                v-if="userData.permisos.includes( 'insumos')">
             <div  class="card orange darken-1 white-text waves-effect waves-light hoverable mouse-select"
                   style="width:100%"
                   @click="irReporte('insumos')">
@@ -56,7 +55,7 @@
           </div>
 
           <div  class="col s12 m6 l4"
-                v-if="userData.permisos.includes( 'operativo') || userData.permisos.includes( 'admin')">
+                v-if="userData.permisos.includes( 'operativo' )">
             <div  class="card light-green darken-1 white-text waves-effect waves-light hoverable mouse-select"
                   style="width:100%"
                   @click="irReporte('operativo')">
@@ -68,6 +67,12 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <hr>
+        Aqui vamos a probar datos dinamicos
+
+        <div class="row">
 
         </div>
       </div>
@@ -90,10 +95,16 @@ export default {
   components: {},
   beforeMount(){
     this.userData = AuthService.userData();
+    this.getReportesUsuario( this.userData.permisos );
   }, 
   methods: {
     irReporte(ruta){
       this.$router.push(`/${ ruta }`);
+    },
+
+    getReportesUsuario( permisos ){
+      console.log(permisos);
+      ApiService.reportesPermitidos(permisos).then(res => console.log(res));
     }
   }
 }

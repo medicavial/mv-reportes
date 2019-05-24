@@ -1,7 +1,7 @@
 const permisos = {
-    root:       ['admin'],
-    sramirez:   ['admin'],
-    agutierrez: ['admin'],
+    root:       ['admin', 'particulares', 'insumos', 'operativo'],
+    sramirez:   ['admin', 'particulares', 'insumos', 'operativo'],
+    agutierrez: ['admin', 'particulares', 'insumos', 'operativo'],
     jsanchez:   ['particulares'],
     xsanchez:   [],
     msanchez:   [],
