@@ -17,24 +17,43 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "login" */ './views/Login.vue')
     },
+
     {
       path: '/inicio',
       name: 'home',
       component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
       // meta: { requiresAuth: true }
     },
+
     {
       path: '/particulares',
       name: 'particulares',
       component: () => import(/* webpackChunkName: "particulares" */ './views/Particulares.vue')
     },
     {
+      path: '/particulares/:id',
+      name: 'particulares',
+      component: () => import(/* webpackChunkName: "particulares" */ './views/Particulares.vue')
+    },
+
+    {
       path: '/insumos',
       name: 'insumos',
       component: () => import(/* webpackChunkName: "insumos" */ './views/Insumos.vue')
     },
     {
+      path: '/insumos/:id',
+      name: 'insumos',
+      component: () => import(/* webpackChunkName: "insumos" */ './views/Insumos.vue')
+    },
+
+    {
       path: '/operativo',
+      name: 'operativo',
+      component: () => import(/* webpackChunkName: "operativo" */ './views/Operativo.vue')
+    },
+    {
+      path: '/operativo/:id',
       name: 'operativo',
       component: () => import(/* webpackChunkName: "operativo" */ './views/Operativo.vue')
     }
