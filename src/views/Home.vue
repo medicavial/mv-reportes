@@ -70,9 +70,16 @@
         </div>
 
         <hr>
-        Aqui vamos a probar datos dinamicos
 
-        <div class="row">
+        <div class="row" v-if="isLoadingData">
+          <div class="col s12 center grey-text">
+            <i class="mdi mdi-settings mdi-48px mdi-spin"></i>
+            <br>
+            Cargando...
+          </div>
+        </div>
+
+        <div class="row animated fadeIn fast" v-if="userData.permisos.length === 1">
           <div  class="col s12 m6 l4" 
                 v-for="reporte in listadoReportes" 
                 :key="reporte.REP_id">
@@ -88,6 +95,32 @@
             </div>
           </div>
         </div>
+
+        <div class="row animated fadeIn fast" v-if="userData.permisos.length > 1">
+          <div class="row">
+            <div class="col s12">
+              <h5>Reportes por categoría:</h5>
+            </div>
+          </div>
+
+          <div  class="col s12 m6 l4" 
+                v-for="reporte in listadoReportes" 
+                :key="reporte.REP_id">
+            <div  class="card card-extended white-text waves-effect waves-light hoverable mouse-select"
+                  :class="{ 'cyan darken-1':        reporte.REP_permiso === 'particulares', 
+                            'orange darken-1':      reporte.REP_permiso === 'insumos',
+                            'light-green darken-1': reporte.REP_permiso === 'operativo' }"
+                  @click="irReporte(reporte.REP_permiso, reporte.REP_id)">
+              <div class="card-content">
+                <span class="card-title"> {{ reporte.REP_permiso.toUpperCase() }} </span>
+                <!-- <p> {{ reporte.REP_permiso.toUpperCase() }} </p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
       </div>
     </div>
   </div>
@@ -103,7 +136,8 @@ export default {
   data() {
     return {
       userData: null,
-      listadoReportes: []
+      listadoReportes: [],
+      isLoadingData: false,
     }
   },
   components: {},
@@ -111,6 +145,7 @@ export default {
     this.userData = AuthService.userData();
     this.getReportesUsuario( this.userData.permisos );
   }, 
+  mounted(){},
   methods: {
     // irReporte(ruta){
     //   this.$router.push(`/${ ruta }`);
@@ -122,8 +157,13 @@ export default {
     },
     getReportesUsuario( permisos ){
       console.log(permisos);
+      this.isLoadingData = true;
+
       ApiService.reportesPermitidos(permisos)
-        .then(res => this.listadoReportes = res);
+        .then(res => {
+          this.listadoReportes = res;
+          this.isLoadingData = false;
+        });
     }
   }
 }
