@@ -26,7 +26,12 @@ export default new Router({
     },
 
     {
-      path: '/particulares*',
+      path: '/particulares',
+      name: 'particulares',
+      component: () => import(/* webpackChunkName: "particulares" */ './views/Particulares.vue')
+    },
+    {
+      path: '/particulares/:id',
       name: 'particulares',
       component: () => import(/* webpackChunkName: "particulares" */ './views/Particulares.vue')
     },

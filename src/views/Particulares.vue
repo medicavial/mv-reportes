@@ -1,5 +1,32 @@
 <template>
   <div class="particulares">
+
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="card card-extended">
+              <div class="card-content">
+                <span class="card-title">
+                  <strong>REPORTES DE PARTICULARES</strong>
+                </span>
+              </div>
+          </div>
+        </div>
+
+        <div class="col s12 m6 l4">
+          <div class="card card-extended cyan darken-1 white-text waves-effect waves-light hoverable mouse-select">
+            <div class="card-content">
+              <span class="card-title">
+                Reporte general
+              </span>
+              <p> PARTICULARES </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <div id="loading-icon">
       <div class="row valing-wrapper">
         <div class="col s12 center grey-text">
@@ -21,6 +48,7 @@ export default {
     name: 'particulares',
     data() {
       return {
+        permiso: 'particulares',
         userData: null
       }
     },
