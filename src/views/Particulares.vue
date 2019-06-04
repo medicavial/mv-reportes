@@ -7,19 +7,20 @@
           <div class="card card-extended">
               <div class="card-content">
                 <span class="card-title">
-                  <strong>REPORTES DE PARTICULARES</strong>
+                  <strong>Reportes de particulares</strong>
                 </span>
               </div>
           </div>
         </div>
 
-        <div class="col s12 m6 l4">
-          <div class="card card-extended cyan darken-1 white-text waves-effect waves-light hoverable mouse-select">
+        <div class="col s12 m6 l4" v-for="reporte in listadoReportes" :key="reporte.REP_id">
+          <div class="card card-extended cyan darken-1 white-text waves-effect waves-light hoverable mouse-select animated fadeIn"
+               @click="verReporte( reporte.REP_id )">
             <div class="card-content">
               <span class="card-title">
-                Reporte general
+                {{ reporte.REP_nombre }}
               </span>
-              <p> PARTICULARES </p>
+              <p> {{ reporte.REP_permiso.toUpperCase() }} </p>
             </div>
           </div>
         </div>
@@ -27,7 +28,7 @@
       </div>
     </div>
 
-    <div id="loading-icon">
+    <div id="loading-icon" v-if="isLoadingData">
       <div class="row valing-wrapper">
         <div class="col s12 center grey-text">
           <i class="mdi mdi-settings mdi-48px mdi-spin"></i>
@@ -36,24 +37,26 @@
         </div>
       </div>
     </div>
-
-    <div id="frameContainer"></div>
   </div>
 </template>
 
 <script>
 import AuthService from '@/services/authService'
+import ApiService from '@/services/apiService'
 
 export default {
     name: 'particulares',
     data() {
       return {
+        userData: null,
+        isLoadingData: false,
         permiso: 'particulares',
-        userData: null
+        listadoReportes: null
       }
     },
     beforeCreate() {
       let permisos = AuthService.userData().permisos;
+      
       let permitido = ( permisos.includes('particulares') || permisos.includes('admin') ) ? true : false;
 
       if ( !permitido ) {
@@ -63,31 +66,24 @@ export default {
         this.$router.push('/inicio');
       }
     },
-    mounted() {
-      let loadingIcon = document.getElementById('loading-icon');
-      let frameContainer = document.getElementById('frameContainer');
+    created(){},
+    beforeMount() {
+      this.getReportesPermiso( this.permiso );
+    },
+    mounted(){},
+    methods: {
+      async getReportesPermiso( permiso ){
+        this.isLoadingData = true;
 
-      let sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight - ( window.innerHeight * 0.08 )
-      }
-
-      let dataFrame= `<iframe frameborder=0 
-                              width="${ sizes.width }" 
-                              height="${ sizes.height }" 
-                              id="frame-content"
-                              src="https://analytics.zoho.com/open-view/1945768000000340508/0c979cab04c16b3763b3cd1f176b6f96">
-                      </iframe>`;
-
-      frameContainer.innerHTML = dataFrame;
-      dataFrame = null;
-
-      let frameContent = document.getElementById('frame-content');
-
-      frameContent.onload = () => {
-        frameContent.classList.add('animated', 'fadeIn', 'fast');
-        loadingIcon.classList.add('animated', 'fadeOut','fast', 'hide')
-        loadingIcon.parentNode.removeChild(loadingIcon)
+        await ApiService.reportesPermiso(permiso)
+          .then(res => {
+            this.listadoReportes = res.data;
+            this.isLoadingData = false;
+          });
+      },
+      verReporte( id ){
+        console.log(id);
+        this.$router.push(`/${this.permiso}/${id}`);
       }
     }
 }

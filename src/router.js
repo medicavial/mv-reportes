@@ -32,8 +32,8 @@ export default new Router({
     },
     {
       path: '/particulares/:id',
-      name: 'particulares',
-      component: () => import(/* webpackChunkName: "particulares" */ './views/Particulares.vue')
+      name: 'particularesRep',
+      component: () => import(/* webpackChunkName: "reporte" */ './views/Reporte.vue')
     },
     {
       path: '/insumos',
@@ -41,9 +41,19 @@ export default new Router({
       component: () => import(/* webpackChunkName: "insumos" */ './views/Insumos.vue')
     },
     {
+      path: '/insumos/:id',
+      name: 'insumos',
+      component: () => import(/* webpackChunkName: "reporte" */ './views/Reporte.vue')
+    },
+    {
       path: '/operativo',
       name: 'operativo',
       component: () => import(/* webpackChunkName: "operativo" */ './views/Operativo.vue')
+    },
+    {
+      path: '/operativo/:id',
+      name: 'operativo',
+      component: () => import(/* webpackChunkName: "reporte" */ './views/Reporte.vue')
     }
   ]
 })

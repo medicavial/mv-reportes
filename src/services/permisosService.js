@@ -5,7 +5,7 @@ const permisos = {
     jabraham:   ['operativo'],
     jsanchez:   ['particulares', 'operativo'],
     xsanchez:   ['operativo'],
-    msanchez:   [],
+    msanchez:   ['particulares'],
     sammv:      ['insumos'],
     lmorales:   ['particulares', 'insumos'],
     eraya:      ['insumos'],

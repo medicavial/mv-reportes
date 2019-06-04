@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <!-- <div class="row">
           <div  class="col s12 m6 l4"
                 v-if="userData.permisos.includes( 'particulares')">
             <div  class="card cyan darken-1 white-text waves-effect waves-light hoverable mouse-select"
@@ -67,9 +67,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <hr>
+        <!-- <hr> -->
 
         <div class="row" v-if="isLoadingData">
           <div class="col s12 center grey-text">
@@ -79,7 +79,7 @@
           </div>
         </div>
 
-        <div class="row animated fadeIn fast" v-if="userData.permisos.length === 1">
+        <!-- <div class="row animated fadeIn fast" v-if="userData.permisos.length === 1">
           <div  class="col s12 m6 l4" 
                 v-for="reporte in listadoReportes" 
                 :key="reporte.REP_id">
@@ -94,9 +94,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div class="row animated fadeIn fast" v-if="userData.permisos.length > 1">
+        <div class="row animated fadeIn fast">
           <div class="col s12" v-if="listadoReportes.length > 0">
             <h5>Reportes por categoría:</h5>
           </div>
@@ -108,7 +108,7 @@
                   :class="{ 'cyan darken-1':        reporte.REP_permiso === 'particulares', 
                             'orange darken-1':      reporte.REP_permiso === 'insumos',
                             'light-green darken-1': reporte.REP_permiso === 'operativo' }"
-                  @click="irReporte(reporte.REP_permiso, reporte.REP_id)">
+                  @click="irReporte(reporte.REP_permiso)">
               <div class="card-content">
                 <span class="card-title"> {{ reporte.REP_permiso.toUpperCase() }} </span>
                 
@@ -145,16 +145,16 @@ export default {
   }, 
   mounted(){},
   methods: {
-    irReporte(ruta){
-      this.$router.push(`/${ ruta }`);
-    },
-    // irReporte(permiso,id){
-    //   console.log(permiso,id);
-      
-    //   this.$router.push(`/${ permiso }/${ id }`);
+    // irReporte(ruta){
+    //   this.$router.push(`/${ ruta }`);
     // },
+    irReporte(permiso,id){
+      // console.log(permiso,id);
+      
+      this.$router.push(`/${ permiso }`);
+    },
     getReportesUsuario( permisos ){
-      console.log(permisos);
+      // console.log(permisos);
       this.isLoadingData = true;
 
       ApiService.reportesPermitidos(permisos)

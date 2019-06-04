@@ -1,7 +1,34 @@
 <template>
   <div class="insumos">
 
-    <div id="loading-icon">
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="card card-extended">
+              <div class="card-content">
+                <span class="card-title">
+                  <strong>Reportes de Insumos</strong>
+                </span>
+              </div>
+          </div>
+        </div>
+
+        <div class="col s12 m6 l4" v-for="reporte in listadoReportes" :key="reporte.REP_id">
+          <div class="card card-extended orange darken-1 white-text waves-effect waves-light hoverable mouse-select animated fadeIn"
+               @click="verReporte( reporte.REP_id )">
+            <div class="card-content">
+              <span class="card-title">
+                {{ reporte.REP_nombre }}
+              </span>
+              <p> {{ reporte.REP_permiso.toUpperCase() }} </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="loading-icon" v-if="isLoadingData">
       <div class="row valing-wrapper">
         <div class="col s12 center grey-text">
           <i class="mdi mdi-settings mdi-48px mdi-spin"></i>
@@ -10,19 +37,21 @@
         </div>
       </div>
     </div>
-
-    <div id="frameContainer"></div>
   </div>
 </template>
 
 <script>
 import AuthService from '@/services/authService'
+import ApiService from '@/services/apiService'
 
 export default {
     name: 'insumos',
     data() {
       return {
-        userData: null
+        userData: null,
+        isLoadingData: false,
+        permiso: 'insumos',
+        listadoReportes: null
       }
     },
     beforeCreate() {
@@ -36,31 +65,24 @@ export default {
         this.$router.push('/inicio');
       }
     },
-    mounted() {
-      let loadingIcon = document.getElementById('loading-icon');
-      let frameContainer = document.getElementById('frameContainer');
-      
-      let sizes = {
-        width: window.innerWidth,
-        height: window.innerHeight - ( window.innerHeight * 0.08 )
-      }
+    created(){},
+    beforeMount() {
+      this.getReportesPermiso( this.permiso );
+    },
+    mounted() {},
+    methods: {
+      async getReportesPermiso( permiso ){
+        this.isLoadingData = true;
 
-      let dataFrame= `<iframe frameborder=0 
-                              width="${ sizes.width }" 
-                              height="${ sizes.height }"
-                              id="frame-content"
-                              src="https://analytics.zoho.com/open-view/1945768000000457010/">
-                      </iframe>`;
-
-      frameContainer.innerHTML = dataFrame;
-      dataFrame = null;
-
-      let frameContent = document.getElementById('frame-content');
-
-      frameContent.onload = () => {
-        frameContent.classList.add('animated', 'fadeIn', 'fast');
-        loadingIcon.classList.add('animated', 'fadeOut','fast', 'hide')
-        loadingIcon.parentNode.removeChild(loadingIcon)
+        await ApiService.reportesPermiso(permiso)
+          .then(res => {
+            this.listadoReportes = res.data;
+            this.isLoadingData = false;
+          });
+      },
+      verReporte( id ){
+        console.log(id);
+        this.$router.push(`/${this.permiso}/${id}`);
       }
     }
 }
