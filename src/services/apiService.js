@@ -1,9 +1,17 @@
-// const baseURL = 'https://busqueda.medicavial.net/api';
-const baseURL = 'http://localhost:8000';
+const baseURL = 'https://busqueda.medicavial.net/api';
+// const baseURL = 'http://localhost:8000';
+
+const idSistema = 1;
 
 let headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
+}
+
+let postReq = {
+    headers,
+    method: 'POST',
+    body: null
 }
 
 export default {
@@ -14,28 +22,23 @@ export default {
     // },
 
     login: ( credentials ) => {
-        const url = `${baseURL}/externos/login`;
+        const url = `${baseURL}/users/login`;
 
         let loginData = {
             username: credentials.usr,
             password: credentials.pwd,
-            remember: credentials.rem
+            idSistema
+            // remember: credentials.rem
         }
 
-        return fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify( loginData )
-        }).then(res => res.json());
+        postReq.body = JSON.stringify(loginData);
+
+        return fetch(url, postReq).then(res => res.json());
     },
 
     
     reportesUsuario: () => {
-        const url = `${baseURL}/reportes/listado`
-
+        const url = `${baseURL}/reportes/listado`;
         return fetch(url).then(res => res.json());
     },
 
@@ -43,39 +46,25 @@ export default {
         const url = `${baseURL}/reportes/reportesPermitidos`
 
         let data = { permisosUsuario: permisos }
-
-        return fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(res => res.json());
+        postReq.body = JSON.stringify(data);
+        return fetch(url, postReq).then(res => res.json());
     },
 
     reportesPermiso: (permiso) => {
         const url = `${baseURL}/reportes/reportesPermiso`
 
         let data = { permiso }
+        postReq.body = JSON.stringify(data);
 
-        return fetch(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(data)
-        }).then(res => res.json());
+        return fetch(url, postReq).then(res => res.json());
     },
 
     getReporte: ( userData, id ) => {
         const url = `${baseURL}/reportes/getReporte`
 
         let data = { userData, id }
-
-        return fetch(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(data)
-        }).then(res => res.json());
+        postReq.body = JSON.stringify(data);
+        return fetch(url, postReq).then(res => res.json());
     },
 
 } // termina export

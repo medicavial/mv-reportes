@@ -7,7 +7,7 @@
             <div class="card mouse-default">
               <div class="card-content grey-text text-darken-3">
                 <span class="flow-text">
-                  Bienvenido <strong>{{ userData.fullName }}</strong>
+                  Bienvenido <strong>{{ userData.USU_nombre }} {{ userData.USU_paterno }} {{ userData.USU_materno }} </strong>
                 </span>
 
                 <p v-if="!userData.permisos.includes('admin')">
@@ -25,83 +25,29 @@
           </div>
         </div>
 
-        <!-- <div class="row">
-          <div  class="col s12 m6 l4"
-                v-if="userData.permisos.includes( 'particulares')">
-            <div  class="card cyan darken-1 white-text waves-effect waves-light hoverable mouse-select"
-                  style="width:100%"
-                  @click="irReporte('particulares')">
+        <div class="row" v-if="userData.permisos.includes('admin')">
+          <div class="col s12 m6 l4 animated fadeIn">
+            <div class="card card-extended purple white-text waves-effect waves-light hoverable mouse-select"
+                 @click="irAdminPanel">
               <div class="card-content">
-                <span class="card-title">
-                  Reporte general
-                </span>
-                <p> PARTICULARES </p>
+                <span class="card-title"> ADMINISTRACIÓN </span>
               </div>
             </div>
           </div>
 
-          <div  class="col s12 m6 l4"
-                v-if="userData.permisos.includes( 'insumos')">
-            <div  class="card orange darken-1 white-text waves-effect waves-light hoverable mouse-select"
-                  style="width:100%"
-                  @click="irReporte('insumos')">
-              <div class="card-content">
-                <span class="card-title">
-                  Flujo AIG
-                </span>
-                <p> INSUMOS </p>
-              </div>
-            </div>
-          </div>
-
-          <div  class="col s12 m6 l4"
-                v-if="userData.permisos.includes( 'operativo' )">
-            <div  class="card light-green darken-1 white-text waves-effect waves-light hoverable mouse-select"
-                  style="width:100%"
-                  @click="irReporte('operativo')">
-              <div class="card-content">
-                <span class="card-title">
-                  Registro Web
-                </span>
-                <p> OPERATIVO </p>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- <hr> -->
-
-        <div class="row" v-if="isLoadingData">
-          <div class="col s12 center grey-text">
-            <i class="mdi mdi-settings mdi-48px mdi-spin"></i>
-            <br>
-            Cargando...
+          <div class="col s12">
+            <div class="divider"></div>
           </div>
         </div>
 
-        <!-- <div class="row animated fadeIn fast" v-if="userData.permisos.length === 1">
-          <div  class="col s12 m6 l4" 
-                v-for="reporte in listadoReportes" 
-                :key="reporte.REP_id">
-            <div  class="card card-extended white-text waves-effect waves-light hoverable mouse-select"
-                  :class="{ 'cyan darken-1':    reporte.REP_permiso === 'particulares', 
-                            'orange darken-1':  reporte.REP_permiso === 'insumos',
-                            'light-green darken-1': reporte.REP_permiso === 'operativo' }"
-                  @click="irReporte(reporte.REP_permiso, reporte.REP_id)">
-              <div class="card-content">
-                <span class="card-title"> {{ reporte.REP_nombre }} </span>
-                <p> {{ reporte.REP_permiso.toUpperCase() }} </p>
-              </div>
-            </div>
-          </div>
-        </div> -->
+        <LoadingComponent v-if="isLoadingData" />
 
         <div class="row animated fadeIn fast">
           <div class="col s12" v-if="listadoReportes.length > 0">
             <h5>Reportes por categoría:</h5>
           </div>
 
-          <div  class="col s12 m6 l4" 
+          <div  class="col s12 m6 l4 animated fadeIn fast" 
                 v-for="reporte in listadoReportes" 
                 :key="reporte.REP_id">
             <div  class="card card-extended white-text waves-effect waves-light hoverable mouse-select"
@@ -116,9 +62,6 @@
             </div>
           </div>
         </div>
-
-
-
       </div>
     </div>
   </div>
@@ -128,9 +71,13 @@
 // @ is an alias to /src
 import ApiService from '@/services/apiService'
 import AuthService from '@/services/authService'
+import LoadingComponent from '@/components/LoadingComponent.vue';
 
 export default {
   name: 'home',
+  components: {
+    LoadingComponent
+  },
   data() {
     return {
       userData: null,
@@ -138,23 +85,19 @@ export default {
       isLoadingData: false,
     }
   },
-  components: {},
   beforeMount(){
     this.userData = AuthService.userData();
     this.getReportesUsuario( this.userData.permisos );
   }, 
   mounted(){},
   methods: {
-    // irReporte(ruta){
-    //   this.$router.push(`/${ ruta }`);
-    // },
+    irAdminPanel(){
+      this.$router.push(`/admin`);
+    },
     irReporte(permiso,id){
-      // console.log(permiso,id);
-      
       this.$router.push(`/${ permiso }`);
     },
     getReportesUsuario( permisos ){
-      // console.log(permisos);
       this.isLoadingData = true;
 
       ApiService.reportesPermitidos(permisos)

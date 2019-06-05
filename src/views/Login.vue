@@ -113,12 +113,12 @@ export default {
               .then( res => {
                 this.isWorking = false;
                 
-                if ( !res || res.length !== 1 ){
+                if ( !res.ok ){
                   return M.toast({html: `<span><i class="mdi mdi-alert"></i> Datos incorrectos</span>`,
                                   classes: 'orange'});
                 }
                 
-                let resAuth = AuthService.auth( res[0], this.credentials.rem );
+                let resAuth = AuthService.auth( res.data, this.credentials.rem );
 
                 this.$router.push('/inicio');
               });

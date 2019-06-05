@@ -4,7 +4,7 @@ let changeStatus = new Event('changeStatus');
 
 export default {
     auth( userData, remember ){
-        let permisos = PermisosService.verificaPermisos(userData.username);
+        let permisos = PermisosService.verificaPermisos(userData.USU_username);
         userData.permisos = permisos;
         
         sessionStorage.setItem('session', JSON.stringify(userData))
@@ -26,7 +26,7 @@ export default {
                 sessionStorage.setItem('session', JSON.stringify(JSON.parse(localStorage.getItem('session'))));
             }
             let usuario = JSON.parse(sessionStorage.getItem('session'));
-            // console.log(PermisosService.verificaPermisos(usuario.username));
+            // console.log(PermisosService.verificaPermisos(usuario.USU_username));
 
             return true;
         } else {

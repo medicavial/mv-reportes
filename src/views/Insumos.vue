@@ -28,24 +28,25 @@
       </div>
     </div>
 
-    <div id="loading-icon" v-if="isLoadingData">
-      <div class="row valing-wrapper">
-        <div class="col s12 center grey-text">
-          <i class="mdi mdi-settings mdi-48px mdi-spin"></i>
-          <br>
-          Cargando...
-        </div>
-      </div>
-    </div>
+    <LoadingComponent v-if="isLoadingData" />
+
+    <BtnHomeFiexedComponent />
+
   </div>
 </template>
 
 <script>
 import AuthService from '@/services/authService'
 import ApiService from '@/services/apiService'
+import BtnHomeFiexedComponent from '@/components/BtnHomeFixedComponent.vue';
+import LoadingComponent from '@/components/LoadingComponent.vue';
 
 export default {
     name: 'insumos',
+    components: {
+      BtnHomeFiexedComponent,
+      LoadingComponent
+    },
     data() {
       return {
         userData: null,

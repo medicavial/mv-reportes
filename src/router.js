@@ -42,7 +42,7 @@ export default new Router({
     },
     {
       path: '/insumos/:id',
-      name: 'insumos',
+      name: 'insumosRep',
       component: () => import(/* webpackChunkName: "reporte" */ './views/Reporte.vue')
     },
     {
@@ -52,8 +52,13 @@ export default new Router({
     },
     {
       path: '/operativo/:id',
-      name: 'operativo',
+      name: 'operativoRep',
       component: () => import(/* webpackChunkName: "reporte" */ './views/Reporte.vue')
-    }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue')
+    },
   ]
 })

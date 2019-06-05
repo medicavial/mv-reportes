@@ -13,20 +13,20 @@
         <div id="frameContainer"></div>
 
         <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red">
-            <i class="mdi mdi-menu"></i>
-        </a>
-        <ul>
-            <li><a class="btn-floating mv-blue" @click="regresar('inicio')"><i class="mdi mdi-home"></i></a></li>
-            <li><a  class="btn-floating"
-                    :class="{'cyan darken-1':       rutaPermiso === 'particulares', 
-                            'orange darken-1':      rutaPermiso === 'insumos',
-                            'light-green darken-1': rutaPermiso === 'operativo' }"
-                    @click="regresar(rutaPermiso)">
-                    <i class="mdi mdi-arrow-left"></i>
-                </a>
-            </li>
-        </ul>
+            <a class="btn-floating btn-large red">
+                <i class="mdi mdi-menu"></i>
+            </a>
+            <ul>
+                <li><a class="btn-floating mv-blue" @click="regresar('inicio')"><i class="mdi mdi-home"></i></a></li>
+                <li><a  class="btn-floating"
+                        :class="{'cyan darken-1':       rutaPermiso === 'particulares', 
+                                'orange darken-1':      rutaPermiso === 'insumos',
+                                'light-green darken-1': rutaPermiso === 'operativo' }"
+                        @click="regresar(rutaPermiso)">
+                        <i class="mdi mdi-arrow-left"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
 
     </div>
