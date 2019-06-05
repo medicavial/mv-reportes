@@ -1,5 +1,5 @@
-const baseURL = 'https://busqueda.medicavial.net/api';
-// const baseURL = 'http://localhost:8000';
+// const baseURL = 'https://busqueda.medicavial.net/api';
+const baseURL = 'http://localhost:8000';
 
 const idSistema = 1;
 
@@ -36,16 +36,24 @@ export default {
         return fetch(url, postReq).then(res => res.json());
     },
 
+    getPermisos: () => {
+        const url = `${baseURL}/users/listapermisos`;
+        let data = {idSistema}
+        postReq.body = JSON.stringify(data);
+        return fetch(url, postReq).then(res => res.json());
+    },
     
-    reportesUsuario: () => {
-        const url = `${baseURL}/reportes/listado`;
-        return fetch(url).then(res => res.json());
+    getUsuariosXsistema: () => {
+        const url = `${baseURL}/users/usuariosxsistema`;
+        let data = { idSistema }
+        postReq.body = JSON.stringify(data);
+        return fetch(url, postReq).then(res => res.json());
     },
 
-    reportesPermitidos: ( permisos ) => {
-        const url = `${baseURL}/reportes/reportesPermitidos`
+    getReporte: (userData, id) => {
+        const url = `${baseURL}/reportes/getReporte`
 
-        let data = { permisosUsuario: permisos }
+        let data = { userData, id }
         postReq.body = JSON.stringify(data);
         return fetch(url, postReq).then(res => res.json());
     },
@@ -59,12 +67,16 @@ export default {
         return fetch(url, postReq).then(res => res.json());
     },
 
-    getReporte: ( userData, id ) => {
-        const url = `${baseURL}/reportes/getReporte`
+    reportesPermitidos: (permisos) => {
+        const url = `${baseURL}/reportes/reportesPermitidos`
 
-        let data = { userData, id }
+        let data = { permisosUsuario: permisos }
         postReq.body = JSON.stringify(data);
         return fetch(url, postReq).then(res => res.json());
     },
 
+    reportesUsuario: () => {
+        const url = `${baseURL}/reportes/listado`;
+        return fetch(url).then(res => res.json());
+    },
 } // termina export
