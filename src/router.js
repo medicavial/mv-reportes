@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import AuthService from '@/services/authService';
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -21,8 +22,7 @@ export default new Router({
     {
       path: '/inicio',
       name: 'home',
-      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
-      // meta: { requiresAuth: true }
+      component: () => import(/* webpackChunkName: "home" */ './views/Home.vue')
     },
 
     {
@@ -58,7 +58,40 @@ export default new Router({
     {
       path: '/admin',
       name: 'admin',
-      component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue')
+      component: () => import(/* webpackChunkName: "admin" */ './views/Admin.vue'),
+      meta: {
+        onlyAdmin: true
+      }
     },
+    {
+      path: '/admin/usuarios',
+      name: 'usuarios',
+      component: () => import(/* webpackChunkName: "usuarios" */ './views/Usuarios.vue'),
+      meta: {
+        onlyAdmin: true
+      }
+    }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  let isAutenticated = AuthService.checkSession();
+  let onlyAdmin = to.matched.some( route => route.meta.onlyAdmin );
+  
+  if (isAutenticated){
+    let userData = AuthService.userData();
+    let isAdmin = userData.permisos.some( permiso => permiso === 'admin' )
+
+    if( onlyAdmin && !isAdmin ){
+      next('home');
+    }
+
+    if (onlyAdmin && isAdmin) {
+      next();
+    }
+  }
+
+  next();
+})
+
+export default router;

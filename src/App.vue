@@ -2,11 +2,6 @@
   <!-- LA APLICACION VA DENTRO DEL #APP -->
   <div id="app">
     <header>
-      <!-- <div id="nav">
-        <router-link to="/">Login</router-link> |
-        <router-link to="/inicio">Inicio</router-link> |
-        <router-link to="/about">About</router-link>
-      </div> -->
       <HeaderComponent></HeaderComponent>
     </header>
     
