@@ -1,3 +1,5 @@
+import AuthService from '@/services/authService';
+
 // const baseURL = 'https://busqueda.medicavial.net/api';
 const baseURL = 'http://localhost:8000';
 
@@ -33,6 +35,19 @@ export default {
 
         postReq.body = JSON.stringify(loginData);
 
+        return fetch(url, postReq).then(res => res.json());
+    },
+
+    createUser: ( userData ) => {
+        const url = `${baseURL}/users/crearusuarioxsistema`;
+        
+        let data = { 
+            idUsuario: AuthService.userData().USU_id,
+            idSistema,
+            userData
+        }
+
+        postReq.body = JSON.stringify(data);
         return fetch(url, postReq).then(res => res.json());
     },
 

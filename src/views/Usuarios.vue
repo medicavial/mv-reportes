@@ -51,22 +51,59 @@
                             <div class="row">
                                 <div class="input-field col s12 m6 l4">
                                     <i class="mdi mdi-account-plus prefix"></i>
-                                    <input id="username" type="text" @keyup="userFormValidation()">
+                                    <input  id="username" 
+                                            type="text" 
+                                            @keyup="userFormValidation()"
+                                            v-model="nuevoUsuario.credenciales.username"
+                                            minlength="3"
+                                            maxlength="15"
+                                            required
+                                            :disabled="regStep>0">
                                     <label for="username">Username</label>
                                 </div>
 
                                 <div class="input-field col s12 m6 l4">
                                     <i class="mdi mdi-at prefix"></i>
-                                    <input id="email" type="email" @keyup="userFormValidation()">
+                                    <input  id="email" 
+                                            type="email" 
+                                            @keyup="userFormValidation()"
+                                            v-model="nuevoUsuario.credenciales.email"
+                                            required
+                                            :disabled="regStep>0">
                                     <label for="email">Email</label>
                                 </div>
 
                                 <div class="col s12 m6 l4">
+                                    <br class="hide-on-small-only">
                                     <button type="submit" 
-                                            class="btn green right"
-                                            v-bind:class="{ disabled: isWorking }">
-                                        Enviar Datos
+                                            class="btn green right waves-effect waves-light col s12"
+                                            v-bind:class="{ disabled: isWorking || !userFormValid }">
+                                        <span v-if="!isWorking">Enviar Datos</span>
+                                        <span v-if="isWorking"> <i class="mdi mdi-settings mdi-spin"></i> </span>
                                     </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="divider"></div>
+
+                        <form id="privileges-form" class="disabled">
+                            <div class="row">
+                                <h5>Permisos</h5>
+                                <div class="col s12 m6 l4" v-for="(item, index) in listadoPermisos" :key="index">
+                                    <p v-if="item.PER_reqPrivilegios">
+                                        <label>
+                                            <input type="checkbox" class="filled-in" value="item.PER_id" :disabled="regStep<1"/>
+                                            <span> {{ item.PER_nombre }} (*) </span>
+                                        </label>
+                                    </p>
+
+                                    <p v-if="!item.PER_reqPrivilegios">
+                                        <label>
+                                            <input type="checkbox" class="filled-in" value="item.PER_id" :disabled="regStep<1"/>
+                                            <span> {{ item.PER_nombre }} </span>
+                                        </label>
+                                    </p>
                                 </div>
                             </div>
                         </form>
@@ -98,10 +135,12 @@ export default {
     },
     data() {
         return {
+            listadoPermisos: null,
             permiso: 'admin',
             userData: null,
             isLoading: {
-                usuarios: false
+                usuarios: false,
+                permisos: false
             },
             listadoUsuarios: null,
             filterResults: null,
@@ -118,7 +157,9 @@ export default {
                     telefono: null
                 }
             },
-            isWorking: false
+            isWorking: false,
+            userFormValid: false,
+            regStep: 0
         }
     },
     beforeCreate(){
@@ -133,14 +174,21 @@ export default {
         }
     },
     mounted(){
+        this.getListaPermisos();
         this.getUsuariosXsistema();
         M.AutoInit();
-        // let mdlUsuario = document.querySelector('#mdl-usuario');
-        // mdlPermisosInstance = M.Modal.init(mdlUsuario, {
-        //     dismissible: false
-        // });
+        this.message();
     },
     methods: {
+        async getListaPermisos(){
+            this.isLoading.permisos = true;
+
+            await ApiService.getPermisos()
+            .then(res => {
+                    this.isLoading.permisos = false;
+                    this.listadoPermisos = res.data;
+            });
+        },
         async getUsuariosXsistema(){
             this.isLoading.usuarios = true;
 
@@ -163,8 +211,37 @@ export default {
             let instance = M.Modal.getInstance(mdlUsuario);
             instance.open();
         },
-        sendNewUser(){
-            console.log( this.nuevoUsuario.credenciales )
+
+        userFormValidation(){
+            let invalidNodes    = document.querySelectorAll(`#user-form :invalid`);
+
+            this.userFormValid = ( invalidNodes.length === 0 ) ? true : false;
+            return this.userFormValid;
+        },
+
+        async sendNewUser(){
+            this.isWorking = true;
+
+            let datos = {
+                username: this.nuevoUsuario.credenciales.username,
+                email: this.nuevoUsuario.credenciales.email
+            }
+
+            await ApiService.createUser( datos )
+            .then(res => {
+                    this.isWorking = false;
+                    this.regStep++
+                    
+                    if (!res.ok) return this.message( 'alert', res.message, 'orange' );
+
+                    this.listadoUsuarios();
+            });
+        },
+        
+        message( icon='information', msg='prueba', color='blue' ){
+            let html = `<span><i class="mdi mdi-${icon}"></i> ${msg}</span>`
+            let classes = `${color}`;
+            M.toast({html, classes})
         }
     }
 }
