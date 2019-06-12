@@ -80,7 +80,7 @@ router.beforeEach((to, from, next) => {
   
   if (isAutenticated){
     let userData = AuthService.userData();
-    let isAdmin = userData.permisos.some( permiso => permiso === 'admin' )
+    let isAdmin = userData.permisos.some(permiso => permiso === 'administrador' )
 
     if( onlyAdmin && !isAdmin ){
       next('home');

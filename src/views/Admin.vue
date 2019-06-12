@@ -102,14 +102,14 @@ export default {
                 permisos: false,
                 usuarios: false
             },
-            permiso: 'admin',
+            permiso: 'administrador',
             listadoPermisos: null,
             listadoUsuarios: null
         }
     },
     beforeCreate() {
       let permisos = AuthService.userData().permisos;
-      let permitido = ( permisos.includes('admin') ) ? true : false;
+      let permitido = ( permisos.includes('administrador') ) ? true : false;
 
       if ( !permitido ) {
         M.toast({html: `<span><i class="mdi mdi-cancel"></i> Acceso denegado</span>`,

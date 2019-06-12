@@ -10,7 +10,8 @@
                             </span>
 
                             <button class="right btn btn-floating animated bounceIn waves-effect waves-lignt green"
-                                    @click="openNewUser">
+                                    @click="openNewUser"
+                                    v-if="listadoPermisos && listadoUsuarios">
                                 <i class="mdi mdi-plus"></i>
                             </button>
 
@@ -73,11 +74,11 @@
                                     <label for="email">Email</label>
                                 </div>
 
-                                <div class="col s12 m6 l4">
+                                <div class="col s12 m6 offset-m3 l4 offset-l4">
                                     <br class="hide-on-small-only">
                                     <button type="submit" 
                                             class="btn green right waves-effect waves-light col s12"
-                                            v-bind:class="{ disabled: isWorking || !userFormValid }">
+                                            v-bind:class="{ disabled: isWorking || !userFormValid || regStep>0}">
                                         <span v-if="!isWorking">Enviar Datos</span>
                                         <span v-if="isWorking"> <i class="mdi mdi-settings mdi-spin"></i> </span>
                                     </button>
@@ -87,23 +88,32 @@
 
                         <div class="divider"></div>
 
-                        <form id="privileges-form" class="disabled">
+                        <form id="privileges-form" v-on:submit.prevent="sendUserPrivileges()">
                             <div class="row">
                                 <h5>Permisos</h5>
-                                <div class="col s12 m6 l4" v-for="(item, index) in listadoPermisos" :key="index">
+                                <div class="col s12 m6 l4" v-for="(item, index) in nuevoUsuario.permisos" :key="index">
                                     <p v-if="item.PER_reqPrivilegios">
                                         <label>
-                                            <input type="checkbox" class="filled-in" value="item.PER_id" :disabled="regStep<1"/>
+                                            <input type="checkbox" class="filled-in" value="item.PER_activo" v-model="item.PER_activo" :disabled="regStep!==1"/>
                                             <span> {{ item.PER_nombre }} (*) </span>
                                         </label>
                                     </p>
 
                                     <p v-if="!item.PER_reqPrivilegios">
                                         <label>
-                                            <input type="checkbox" class="filled-in" value="item.PER_id" :disabled="regStep<1"/>
+                                            <input type="checkbox" class="filled-in" value="item.PER_activo" v-model="item.PER_activo" :disabled="regStep!==1"/>
                                             <span> {{ item.PER_nombre }} </span>
                                         </label>
                                     </p>
+                                </div>
+
+                                <div class="col s12 m6 offset-m3 l4 offset-l4">
+                                    <button type="submit" 
+                                            class="btn purple right waves-effect waves-light col s12"
+                                            v-bind:class="{ disabled: isWorking || regStep !== 1 }">
+                                        <span v-if="!isWorking">Guardar permisos</span>
+                                        <span v-if="isWorking"> <i class="mdi mdi-settings mdi-spin"></i> </span>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -112,7 +122,7 @@
 
             </div>
             <div class="modal-footer">
-            <button class="modal-close waves-effect waves-green btn-flat">Cerrar</button>
+            <button class="modal-close waves-effect waves-green btn-flat" @click="resetData()">Cerrar</button>
             </div>
         </div>
     </div>
@@ -136,7 +146,7 @@ export default {
     data() {
         return {
             listadoPermisos: null,
-            permiso: 'admin',
+            permiso: 'administrador',
             userData: null,
             isLoading: {
                 usuarios: false,
@@ -150,12 +160,8 @@ export default {
                     email: null,
                     username: null,
                 },
-                personales: {
-                    nombres: null,
-                    paterno: null,
-                    materno: null,
-                    telefono: null
-                }
+                permisos: [],
+                id: null
             },
             isWorking: false,
             userFormValid: false,
@@ -164,7 +170,7 @@ export default {
     },
     beforeCreate(){
         let permisos = AuthService.userData().permisos;
-        let permitido = ( permisos.includes('admin') ) ? true : false;
+        let permitido = ( permisos.includes('administrador') ) ? true : false;
 
         if ( !permitido ) {
             M.toast({html: `<span><i class="mdi mdi-cancel"></i> Acceso denegado</span>`,
@@ -177,7 +183,6 @@ export default {
         this.getListaPermisos();
         this.getUsuariosXsistema();
         M.AutoInit();
-        this.message();
     },
     methods: {
         async getListaPermisos(){
@@ -187,6 +192,7 @@ export default {
             .then(res => {
                     this.isLoading.permisos = false;
                     this.listadoPermisos = res.data;
+                    this.permisos();
             });
         },
         async getUsuariosXsistema(){
@@ -213,10 +219,28 @@ export default {
         },
 
         userFormValidation(){
-            let invalidNodes    = document.querySelectorAll(`#user-form :invalid`);
+            let invalidNodes = document.querySelectorAll(`#user-form :invalid`);
 
             this.userFormValid = ( invalidNodes.length === 0 ) ? true : false;
             return this.userFormValid;
+        },
+        
+        message( icon='information', msg='prueba', color='blue' ){
+            let html = `<span><i class="mdi mdi-${icon}"></i> ${msg}</span>`
+            let classes = `${color}`;
+            M.toast({html, classes})
+        },
+
+        permisos(){
+            this.listadoPermisos.forEach(permiso => {
+                let permisoStatus = permiso;
+                permisoStatus.PER_activo = false;
+
+                this.nuevoUsuario.permisos.push(permisoStatus);
+            });
+
+            console.log(this.nuevoUsuario.permisos);
+            
         },
 
         async sendNewUser(){
@@ -230,18 +254,49 @@ export default {
             await ApiService.createUser( datos )
             .then(res => {
                     this.isWorking = false;
-                    this.regStep++
                     
                     if (!res.ok) return this.message( 'alert', res.message, 'orange' );
 
-                    this.listadoUsuarios();
+                    this.regStep++
+                    this.nuevoUsuario.id = res.data.USU_id
+                    this.getUsuariosXsistema();
             });
         },
-        
-        message( icon='information', msg='prueba', color='blue' ){
-            let html = `<span><i class="mdi mdi-${icon}"></i> ${msg}</span>`
-            let classes = `${color}`;
-            M.toast({html, classes})
+
+        async sendUserPrivileges(){
+            this.isWorking = true;
+
+            let userData = {
+                USU_id: this.nuevoUsuario.id || 3,
+                privileges: this.nuevoUsuario.permisos
+            }
+
+            await ApiService.saveUserPrivileges( userData )
+            .then(res => {
+                    this.isWorking = false;
+                    this.regStep++;
+                    console.log(res)
+                    if (!res.ok) return this.message( 'alert', res.message, 'orange' );
+
+                    return this.message( 'check-all', 'Usuario creado correctamente', 'green' );
+            });
+        },
+
+        resetData(){
+            let userForm = document.getElementById('user-form');
+            let privilegesForm = document.getElementById('privileges-form');
+
+            userForm.reset();
+            privilegesForm.reset();
+            
+            this.regStep = 0
+
+            this.nuevoUsuario.credenciales.email = null
+            this.nuevoUsuario.credenciales.username = null
+            this.nuevoUsuario.permisos = []
+            this.nuevoUsuario.id = null
+
+            this.permisos();
         }
     }
 }

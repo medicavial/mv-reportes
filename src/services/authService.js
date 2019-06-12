@@ -4,8 +4,16 @@ let changeStatus = new Event('changeStatus');
 
 export default {
     auth( userData, remember ){
-        let permisos = PermisosService.verificaPermisos(userData.USU_username);
-        userData.permisos = permisos;
+        if ( userData.permisos.length < 1 ) {
+            console.log('entra al provicional');
+            
+            let permisos = PermisosService.verificaPermisos(userData.USU_username);
+            userData.permisos = permisos;
+        }else{
+            console.log('permisos desde DB');
+            let permisos = PermisosService.privilegios(userData.permisos);
+            userData.permisos = permisos;
+        }
         
         sessionStorage.setItem('session', JSON.stringify(userData))
         if (remember) localStorage.setItem('session', JSON.stringify(userData))
@@ -26,7 +34,6 @@ export default {
                 sessionStorage.setItem('session', JSON.stringify(JSON.parse(localStorage.getItem('session'))));
             }
             let usuario = JSON.parse(sessionStorage.getItem('session'));
-            // console.log(PermisosService.verificaPermisos(usuario.USU_username));
 
             return true;
         } else {

@@ -7,15 +7,17 @@
             <div class="card mouse-default">
               <div class="card-content grey-text text-darken-3">
                 <span class="flow-text">
-                  Bienvenido <strong>{{ userData.USU_nombre }} {{ userData.USU_paterno }} {{ userData.USU_materno }} </strong>
+                  Bienvenido 
+                  <strong v-if="userData.USU_nombre">{{ userData.USU_nombre }} {{ userData.USU_paterno }} {{ userData.USU_materno }} </strong>
+                  <strong v-if="!userData.USU_nombre">{{ userData.USU_username }} </strong>
                 </span>
 
-                <p v-if="!userData.permisos.includes('admin')">
+                <!-- <p v-if="!userData.permisos.includes('administrador')">
                   Permisos:
                   <span v-for="permiso in userData.permisos" :key="permiso">
                     {{ permiso.toUpperCase() }}
                   </span>
-                </p>
+                </p> -->
 
                 <p class="orange-text text-darken-3">
                   <i class="mdi mdi-alert"></i> Sistema en desarrollo
@@ -25,7 +27,7 @@
           </div>
         </div>
 
-        <div class="row" v-if="userData.permisos.includes('admin')">
+        <div class="row" v-if="userData.permisos.includes('administrador')">
           <div class="col s12 m6 l4 animated fadeIn">
             <div class="card card-extended purple white-text waves-effect waves-light hoverable mouse-select"
                  @click="irAdminPanel">

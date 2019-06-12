@@ -1,7 +1,7 @@
 import AuthService from '@/services/authService';
 
-// const baseURL = 'https://busqueda.medicavial.net/api';
-const baseURL = 'http://localhost:8000';
+const baseURL = 'https://busqueda.medicavial.net/api';
+// const baseURL = 'http://localhost:8000';
 
 const idSistema = 1;
 
@@ -93,5 +93,18 @@ export default {
     reportesUsuario: () => {
         const url = `${baseURL}/reportes/listado`;
         return fetch(url).then(res => res.json());
+    },
+
+    saveUserPrivileges: ( userData ) => {
+        const url = `${baseURL}/users/permisosxusuario`;
+        
+        let data = { 
+            idAdmin: AuthService.userData().USU_id,
+            idSistema,
+            userData
+        }
+
+        postReq.body = JSON.stringify(data);
+        return fetch(url, postReq).then(res => res.json());
     },
 } // termina export

@@ -1,7 +1,8 @@
+// esto es provicional
 const permisos = {
-    root:       ['admin', 'particulares', 'insumos', 'operativo'],
-    sramirez:   ['admin', 'particulares', 'insumos', 'operativo'],
-    agutierrez: ['admin', 'particulares', 'insumos', 'operativo'],
+    root:       ['administrador', 'particulares', 'insumos', 'operativo'],
+    sramirez:   ['administrador', 'particulares', 'insumos', 'operativo'],
+    agutierrez: ['administrador', 'particulares', 'insumos', 'operativo'],
     jabraham:   ['operativo'],
     jsanchez:   ['particulares', 'operativo'],
     xsanchez:   ['operativo'],
@@ -17,5 +18,15 @@ export default {
     verificaPermisos( usuario ){
         const permisosUsuario = permisos[usuario] || [];
         return permisosUsuario;
-    }
+    },
+
+    privilegios(datos){
+        let permisos = []
+
+        datos.forEach(permiso => {
+            permisos.push(permiso.PER_nombre.toLowerCase());
+        });
+
+        return permisos;
+    },
 }
